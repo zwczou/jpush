@@ -10,7 +10,7 @@ type Payload struct {
 	Notification *Notification `json:"notification,omitempty"`
 	Message      *Message      `json:"message,omitempty"`
 	SmsMessage   *SmsMessage   `json:"sms_message,omitempty"`
-	Options      *Option       `json:"options,omitempty"`
+	Options      *Options      `json:"options,omitempty"`
 	Cid          string        `json:"cid,omitempty"`
 }
 
@@ -21,7 +21,7 @@ func (p *Payload) MarshalJSON() ([]byte, error) {
 		Notification *Notification `json:"notification,omitempty"`
 		Message      *Message      `json:"message,omitempty"`
 		SmsMessage   *SmsMessage   `json:"sms_message,omitempty"`
-		Options      *Option       `json:"options,omitempty"`
+		Options      *Options      `json:"options,omitempty"`
 		Cid          string        `json:"cid,omitempty"`
 	}{
 		Platform:     p.Platform.Interface(),

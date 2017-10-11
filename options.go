@@ -1,6 +1,6 @@
 package jpush
 
-type Option struct {
+type Options struct {
 	SendNo          int    `json:"sendno,omitempty"`
 	TimeLive        int    `json:"time_to_live,omitempty"`
 	OverrideMsgId   int64  `json:"override_msg_id,omitempty"`
