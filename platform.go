@@ -22,8 +22,9 @@ func (p *Platform) Interface() interface{} {
 	return p.Value
 }
 
-func (p *Platform) All() {
+func (p *Platform) All() *Platform {
 	p.IsAll = true
+	return p
 }
 
 // 调用者负责去重

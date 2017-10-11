@@ -18,36 +18,44 @@ func (a *Audience) Interface() interface{} {
 	return a.Value
 }
 
-func (a *Audience) All() {
+func (a *Audience) All() *Audience {
 	a.IsAll = true
+	return a
 }
 
-func (a *Audience) SetTag(tags ...string) {
+func (a *Audience) SetTag(tags ...string) *Audience {
 	a.set("tag", tags)
+	return a
 }
 
-func (a *Audience) SetTagAnd(tagAnds ...string) {
+func (a *Audience) SetTagAnd(tagAnds ...string) *Audience {
 	a.set("tag_and", tagAnds)
+	return a
 }
 
-func (a *Audience) SetTagNot(tagNots ...string) {
+func (a *Audience) SetTagNot(tagNots ...string) *Audience {
 	a.set("tag_not", tagNots)
+	return a
 }
 
-func (a *Audience) SetRegistrationId(regIds ...string) {
+func (a *Audience) SetRegistrationId(regIds ...string) *Audience {
 	a.set("registration_id", regIds)
+	return a
 }
 
-func (a *Audience) SetSegment(segments ...string) {
+func (a *Audience) SetSegment(segments ...string) *Audience {
 	a.set("segment", segments)
+	return a
 }
 
-func (a *Audience) SetAbtest(abtests ...string) {
+func (a *Audience) SetAbtest(abtests ...string) *Audience {
 	a.set("abtest", abtests)
+	return a
 }
 
-func (a *Audience) SetAlias(alias ...string) {
+func (a *Audience) SetAlias(alias ...string) *Audience {
 	a.set("alias", alias)
+	return a
 }
 
 func (a *Audience) set(key string, v []string) {
