@@ -1,0 +1,46 @@
+package jpush
+
+const (
+	Ios      = "ios"
+	Android  = "android"
+	WinPhone = "winphone"
+)
+
+type Platform struct {
+	IsAll bool
+	Value []string
+}
+
+func NewPlatform() *Platform {
+	return &Platform{}
+}
+
+func (p *Platform) Interface() interface{} {
+	if p.IsAll {
+		return "all"
+	}
+	return p.Value
+}
+
+func (p *Platform) All() {
+	p.IsAll = true
+}
+
+// 调用者负责去重
+func (p *Platform) Add(oss ...string) *Platform {
+	p.IsAll = false
+	p.Value = append(p.Value, oss...)
+	return p
+}
+
+func (p *Platform) Has(os string) bool {
+	if p.IsAll {
+		return true
+	}
+	for _, o := range p.Value {
+		if o == os {
+			return true
+		}
+	}
+	return false
+}
