@@ -70,9 +70,10 @@ type Trigger struct {
 }
 
 type SchedulePayload struct {
-	Name    string   `json:"name"`
-	Enabled bool     `json:"enabled"`
-	Trigger *Trigger `json:"trigger"`
-	Push    *Payload `json:"push"`
-	Cid     string   `json:"cid,omitempty"`
+	ScheduleId string   `json:"schedule_id,omitempty"`
+	Name       string   `json:"name,omitempty"`
+	Enabled    bool     `json:"enabled,omitempty"`
+	Trigger    *Trigger `json:"trigger,omitempty"`
+	Push       *Payload `json:"push,omitempty"`
+	Cid        string   `json:"cid,omitempty"`
 }
