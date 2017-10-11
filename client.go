@@ -113,6 +113,95 @@ func (j *JpushClient) ScheduleList(pageNo int) (list []SchedulePayload, err erro
 	return out.Schedules, err
 }
 
+// 获取指定的计划任务
+func (j *JpushClient) ScheduleGet(scheduleId string) (schedule SchedulePayload, err error) {
+	err = j.Do(http.MethodGet, "/schedules/"+scheduleId, nil, &schedule)
+	return
+}
+
+type DeviceInfo struct {
+	Tags   []string `json:"tags"`
+	Alias  string   `json:"alias"`
+	Mobile string   `json:"mobile"`
+}
+
+// 查询设备的别名与标签
+func (j *JpushClient) DeviceGet(regId string) (info DeviceInfo, err error) {
+	err = j.Do(http.MethodGet, "/devices/"+regId, nil, &info)
+	return
+}
+
+type TagSet struct {
+	Add    []string `json:"add,omitempty"`
+	Remove []string `json:"remove,omitempty"`
+}
+
+// tags: 支持add, remove 或者空字符串。当tags参数为空字符串的时候，表示清空所有的 tags；add/remove 下是增加或删除指定的 tag；
+// 一次 add/remove tag 的上限均为 100 个，且总长度均不能超过 1000 字节。
+// 可以多次调用 API 设置，一个注册 id tag 上限为1000个，应用 tag 总数没有限制
+type DeviceUpdateSet struct {
+	Tags   interface{} `json:"tags,omitempty"`
+	Alias  string      `json:"alias,omitempty"`
+	Mobile string      `json:"mobile,omitempty"`
+}
+
+// 设置设备的别名与标签
+func (j *JpushClient) DeviceSet(regId string, setInfo *DeviceUpdateSet) error {
+	return j.Do(http.MethodPost, "/devices/"+regId, setInfo, nil)
+}
+
+// 查询别名
+func (j *JpushClient) AliasGet(alias string) (regIds []string, err error) {
+	var out struct {
+		RegistrationIds []string `json:"registration_ids"`
+	}
+	err = j.Do(http.MethodGet, "/aliases/"+alias, nil, &out)
+	return out.RegistrationIds, nil
+}
+
+// 删除别名
+func (j *JpushClient) AliasDelete(alias string) error {
+	return j.Do(http.MethodDelete, "/aliases/"+alias, nil, nil)
+}
+
+// 查询标签列表
+func (j *JpushClient) TagList() (tags []string, err error) {
+	var out struct {
+		Tags []string `json:"tags"`
+	}
+	err = j.Do(http.MethodGet, "/tags/", nil, &out)
+	return out.Tags, nil
+}
+
+// 判断设备与标签绑定关系
+func (j *JpushClient) IsTag(regId, tagId string) (ok bool, err error) {
+	path := fmt.Sprintf("/tags/%s/registration_ids/%s", regId, tagId)
+	var out struct {
+		Result bool `json:"result"`
+	}
+	err = j.Do(http.MethodGet, path, nil, &out)
+	return out.Result, err
+}
+
+type RegistrationIdSet struct {
+	Add    []string `json:"add,omitempty"`
+	Remove []string `json:"remove,omitempty"`
+}
+
+type TagUpdateSet struct {
+	RegistrationIds RegistrationIdSet `json:"registration_ids"`
+}
+
+// 更新标签
+func (j *JpushClient) TagUpdate(tag string, set *TagUpdateSet) (err error) {
+	return j.Do(http.MethodPost, "/tags/"+tag, set, nil)
+}
+
+// 删除标签
+func (j *JpushClient) TagDelete(tag string) error {
+	return j.Do(http.MethodDelete, "/tags/"+tag, nil, nil)
+}
+
 func (j *JpushClient) Do(method, path string, inp, out interface{}) error {
 	var resp *grequests.Response
 	var err error

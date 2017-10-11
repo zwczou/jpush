@@ -6,6 +6,7 @@
 
 * Push API v3
 * Schedule API v3
+* Device API v3
 
 
 ### 安装
