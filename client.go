@@ -79,7 +79,7 @@ func (j *JpushClient) Push(push *Payload) (msgId string, err error) {
 }
 
 // 创建计划任务
-func (j *JpushClient) ScheduleCrewate(push *SchedulePayload) (scheduleId string, err error) {
+func (j *JpushClient) ScheduleCreate(push *SchedulePayload) (scheduleId string, err error) {
 	var out struct {
 		ScheduleId string `json:"schedule_id"`
 		Name       string `json:"name"`

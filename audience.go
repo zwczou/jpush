@@ -59,6 +59,8 @@ func (a *Audience) SetAlias(alias ...string) *Audience {
 }
 
 func (a *Audience) set(key string, v []string) {
-	a.IsAll = false
-	a.Value[key] = v
+	if len(v) > 0 {
+		a.IsAll = false
+		a.Value[key] = v
+	}
 }
