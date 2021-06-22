@@ -16,7 +16,7 @@ func NewPlatform() *Platform {
 }
 
 func (p *Platform) Interface() interface{} {
-	if p.IsAll {
+	if p == nil || p.IsAll {
 		return "all"
 	}
 	return p.Value
