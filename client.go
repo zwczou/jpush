@@ -98,7 +98,7 @@ func (j *JpushClient) ScheduleUpdate(push *SchedulePayload) (out *SchedulePayloa
 
 // 删除制定的计划任务
 func (j *JpushClient) ScheduleDelete(scheduleId string) error {
-	return j.Do(http.MethodPut, "/schedules/"+scheduleId, nil, nil)
+	return j.Do(http.MethodDelete, "/schedules/"+scheduleId, nil, nil)
 }
 
 // 获取有效的计划任务列表
