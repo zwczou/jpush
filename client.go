@@ -85,6 +85,9 @@ func (j *JpushClient) ScheduleCreate(push *SchedulePayload) (scheduleId string, 
 		Name       string `json:"name"`
 	}
 	err = j.Do(http.MethodPost, "/schedules", push, &out)
+	if err != nil {
+		return "", err
+	}
 	return out.ScheduleId, nil
 }
 
@@ -156,6 +159,9 @@ func (j *JpushClient) AliasGet(alias string) (regIds []string, err error) {
 		RegistrationIds []string `json:"registration_ids"`
 	}
 	err = j.Do(http.MethodGet, "/aliases/"+alias, nil, &out)
+	if err != nil {
+		return nil, err
+	}
 	return out.RegistrationIds, nil
 }
 
@@ -170,6 +176,9 @@ func (j *JpushClient) TagList() (tags []string, err error) {
 		Tags []string `json:"tags"`
 	}
 	err = j.Do(http.MethodGet, "/tags/", nil, &out)
+	if err != nil {
+		return nil, err
+	}
 	return out.Tags, nil
 }
 
