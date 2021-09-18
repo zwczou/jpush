@@ -27,7 +27,7 @@ func NewJpushClient(appKey, appSecret string) *JpushClient {
 		appKey:    appKey,
 		appSecret: appSecret,
 		Session: grequests.NewSession(&grequests.RequestOptions{
-			UserAgent: "go-jpush/v0.1.1",
+			UserAgent: "go-jpush/v0.1.2",
 			Auth:      []string{appKey, appSecret},
 			Headers: map[string]string{
 				"Accept": "application/json",
@@ -128,6 +128,25 @@ func (j *JpushClient) ScheduleList(pageNo int) (list []SchedulePayload, err erro
 // 获取指定的计划任务
 func (j *JpushClient) ScheduleGet(scheduleId string) (schedule SchedulePayload, err error) {
 	err = j.Do(http.MethodGet, "/schedules/"+scheduleId, nil, &schedule)
+	return
+}
+
+// 获取定时任务对应的所有 msg_id
+func (j *JpushClient) ScheduleGetMsgIds(scheduleId string) (msgIds []string, err error) {
+	var out struct {
+		MsgIds []struct {
+			MsgId string `json:"msg_id"`
+		} `json:"msgids"`
+	}
+	err = j.Do(http.MethodGet, "/schedules/"+scheduleId+"/msg_ids", nil, &out)
+	if err != nil {
+		return nil, err
+	}
+	for _, item := range out.MsgIds {
+		if item.MsgId != "" {
+			msgIds = append(msgIds, item.MsgId)
+		}
+	}
 	return
 }
 

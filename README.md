@@ -51,3 +51,17 @@
 ```
     client.ScheduleCreate
 ```
+
+5. 方便扩展
+
+如果库没有实现你想使用的方法，可以使用`client.Do`扩展
+
+```go
+// 获取任务的所有msg_id
+var out struct {
+  MsgIds []struct {
+    MsgId string `json:"msg_id"`
+  } `json:"msgids"`
+}
+err := client.Do(http.MethodGet, "/schedules/"+scheduleId+"/msg_ids", nil, &out)
+```
