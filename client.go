@@ -9,6 +9,11 @@ import (
 	"github.com/levigross/grequests"
 )
 
+var (
+	PushHost   = "https://api.jpush.cn/v3"
+	DeviceHost = "https://device.jpush.cn/v3"
+)
+
 type JpushClient struct {
 	*grequests.Session
 	host      string
@@ -18,11 +23,11 @@ type JpushClient struct {
 
 func NewJpushClient(appKey, appSecret string) *JpushClient {
 	return &JpushClient{
-		host:      "https://api.jpush.cn/v3",
+		host:      PushHost,
 		appKey:    appKey,
 		appSecret: appSecret,
 		Session: grequests.NewSession(&grequests.RequestOptions{
-			UserAgent: "go-jpush/v0.1.0",
+			UserAgent: "go-jpush/v0.1.1",
 			Auth:      []string{appKey, appSecret},
 			Headers: map[string]string{
 				"Accept": "application/json",
@@ -130,7 +135,7 @@ type DeviceInfo struct {
 
 // 查询设备的别名与标签
 func (j *JpushClient) DeviceGet(regId string) (info DeviceInfo, err error) {
-	err = j.Do(http.MethodGet, "/devices/"+regId, nil, &info)
+	err = j.Do(http.MethodGet, DeviceHost+"/devices/"+regId, nil, &info)
 	return
 }
 
@@ -150,7 +155,7 @@ type DeviceUpdateSet struct {
 
 // 设置设备的别名与标签
 func (j *JpushClient) DeviceSet(regId string, setInfo *DeviceUpdateSet) error {
-	return j.Do(http.MethodPost, "/devices/"+regId, setInfo, nil)
+	return j.Do(http.MethodPost, DeviceHost+"/devices/"+regId, setInfo, nil)
 }
 
 // 查询别名
@@ -216,6 +221,9 @@ func (j *JpushClient) Do(method, path string, inp, out interface{}) error {
 	var err error
 
 	url := j.Url(path)
+	if strings.HasPrefix(path, "http") {
+		url = path
+	}
 	if method == http.MethodGet {
 		var params = make(map[string]string)
 		if val, ok := inp.(map[string]string); ok {
@@ -265,7 +273,7 @@ func (j *JpushClient) Do(method, path string, inp, out interface{}) error {
 		return err
 	}
 
-	println(resp.String(), resp.StatusCode)
+	// println(resp.String(), resp.StatusCode)
 
 	if resp.StatusCode >= 300 || resp.StatusCode < 200 {
 		if strings.Contains(resp.String(), "error") {
