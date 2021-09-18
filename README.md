@@ -11,7 +11,6 @@
 
 ### 安装
 
-    go get github.com/levigross/grequests
     go get github.com/zwczou/jpush
 
 ### 使用
@@ -19,7 +18,7 @@
 1. 初始化客户端
 
 ```go
-    client := jpush.NewJpushClient("key", "secret")
+    client := jpush.New("key", "secret")
 ```
 
 2. 获取推送唯一标识符 cid

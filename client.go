@@ -36,6 +36,10 @@ func NewJpushClient(appKey, appSecret string) *JpushClient {
 	}
 }
 
+func New(appKey, appSecret string) *JpushClient {
+	return NewJpushClient(appKey, appSecret)
+}
+
 func (j *JpushClient) Url(path string) string {
 	return j.host + path
 }
